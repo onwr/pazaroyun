@@ -2,27 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { useCampaign } from '../context/CampaignContext';
 import Header from '../components/Header';
 import Categories from '../components/Categories';
+import ProductList from '../components/ProductList';
 import Countdown from '../components/Countdown';
 import Footer from '../components/Footer';
 import { db } from '../config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 const Home = () => {
-  const { isCampaignActive, theme, isLoading } = useCampaign();
+  const { theme, isLoading } = useCampaign();
   const [videoEmbed, setVideoEmbed] = useState('');
   const [textContent, setTextContent] = useState({
     subtitle: '',
     title: '',
     subheading: '',
-    description: ''
+    description: '',
   });
+  const [campaignInfo, setCampaignInfo] = useState({
+    endTime: null,
+    campaignDuration: 6,
+    isActive: false,
+  });
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const [homeDoc, textDoc] = await Promise.all([
+        const [homeDoc, textDoc, campaignDoc] = await Promise.all([
           getDoc(doc(db, 'settings', 'home')),
-          getDoc(doc(db, 'settings', 'text'))
+          getDoc(doc(db, 'settings', 'text')),
+          getDoc(doc(db, 'settings', 'campaign')),
         ]);
 
         if (homeDoc.exists()) {
@@ -30,6 +38,20 @@ const Home = () => {
         }
         if (textDoc.exists()) {
           setTextContent(textDoc.data());
+        }
+        if (campaignDoc.exists()) {
+          const data = campaignDoc.data();
+
+          let endTimeDate = null;
+          if (data.endTime && data.endTime.seconds) {
+            endTimeDate = new Date(data.endTime.seconds * 1000);
+          }
+
+          setCampaignInfo({
+            endTime: endTimeDate,
+            campaignDuration: data.campaignDuration || 6,
+            isActive: data.isActive || false,
+          });
         }
       } catch (error) {
         console.error('Error fetching content:', error);
@@ -39,24 +61,76 @@ const Home = () => {
     fetchContent();
   }, []);
 
+  useEffect(() => {
+    const checkCampaignStatus = () => {
+      if (!campaignInfo.endTime) {
+        return;
+      }
+
+      
+
+      if (!campaignInfo.isActive) {
+        setIsActive(false);
+        return;
+      }
+
+      const now = new Date();
+
+      if (!(campaignInfo.endTime instanceof Date) || isNaN(campaignInfo.endTime)) {
+        console.error('Invalid end time:', campaignInfo.endTime);
+        return;
+      }
+
+
+      const timeUntilEnd = campaignInfo.endTime - now;
+
+      if (timeUntilEnd <= 0) {
+        const timeSinceEnd = Math.abs(timeUntilEnd);
+        const hoursSinceEnd = timeSinceEnd / (1000 * 60 * 60);
+
+        const shouldBeActive = hoursSinceEnd < campaignInfo.campaignDuration;
+        setIsActive(shouldBeActive);
+      } else {
+        setIsActive(false);
+      }
+    };
+
+    checkCampaignStatus();
+
+    const interval = setInterval(checkCampaignStatus, 1000);
+    return () => clearInterval(interval);
+  }, [campaignInfo]);
+
   if (isLoading) {
     return (
-      <div className='min-h-screen bg-gradient-to-b from-teal-400 to-[#1a1a1a] flex flex-col items-center justify-center'>
-        <div className='text-center space-y-8'>
-          <img src='/logo.webp' alt='Logo' className='w-32 lg:w-48 h-auto animate-pulse' />
+      <div className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-teal-400 to-[#1a1a1a]'>
+        <div className='space-y-8 text-center'>
+          <img src='/logo.webp' alt='Logo' className='h-auto w-32 animate-pulse lg:w-48' />
           <div className='flex items-center justify-center space-x-2'>
-            <div className='w-3 h-3 bg-green-500 rounded-full animate-bounce' style={{ animationDelay: '0ms' }} />
-            <div className='w-3 h-3 bg-green-500 rounded-full animate-bounce' style={{ animationDelay: '150ms' }} />
-            <div className='w-3 h-3 bg-green-500 rounded-full animate-bounce' style={{ animationDelay: '300ms' }} />
+            <div
+              className='h-3 w-3 animate-bounce rounded-full bg-green-500'
+              style={{ animationDelay: '0ms' }}
+            />
+            <div
+              className='h-3 w-3 animate-bounce rounded-full bg-green-500'
+              style={{ animationDelay: '150ms' }}
+            />
+            <div
+              className='h-3 w-3 animate-bounce rounded-full bg-green-500'
+              style={{ animationDelay: '300ms' }}
+            />
           </div>
-          <p className='text-gray-400 text-sm lg:text-base'>Yükleniyor...</p>
+          <p className='text-sm text-gray-400 lg:text-base'>Yükleniyor...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-b ' style={{ backgroundColor: theme.backgroundColor, color: theme.textColor }}>
+    <div
+      className='min-h-screen bg-gradient-to-b'
+      style={{ backgroundColor: theme.backgroundColor, color: theme.textColor }}
+    >
       <Header />
       <main className='container mx-auto px-4 py-8'>
         <div className='space-y-4 text-center lg:space-y-4'>
@@ -67,16 +141,16 @@ const Home = () => {
             {textContent.title || 'GAMING GECESi'}
           </h1>
           <h2 className='font-display text-xl lg:text-5xl'>
-            {textContent.subheading || 'Her Cuma Saat 22:00'}
+            {textContent.subheading || 'Kampanya Başlıyor!'}
           </h2>
           <h3 className='text-lg lg:text-2xl'>
             {textContent.description || "#GamingGecesi'nin Bomba Ürünlerini Kaçırmadan Al"}
           </h3>
         </div>
 
-        <Countdown />
+        {!isActive && campaignInfo.endTime && <Countdown targetDate={campaignInfo.endTime} />}
 
-        <div className='relative mx-auto aspect-video w-full max-w-[1250px]'>
+        <div className='relative mt-5 mx-auto aspect-video w-full max-w-[1250px]'>
           {videoEmbed && (
             <iframe
               src={videoEmbed}
@@ -89,7 +163,7 @@ const Home = () => {
           )}
         </div>
 
-        {isCampaignActive && <Categories />}
+        {isActive ? <ProductList /> : <Categories />}
       </main>
       <Footer />
     </div>

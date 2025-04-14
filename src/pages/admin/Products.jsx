@@ -17,6 +17,7 @@ const Products = () => {
   });
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,22 +45,25 @@ const Products = () => {
 
   const handleImageUpload = async (file) => {
     try {
-      setIsUploading(true);
       const formData = new FormData();
       formData.append('image', file);
+      formData.append('key', import.meta.env.VITE_IMGBB_API_KEY);
 
-      const response = await fetch('https://api.imgbb.com/1/upload?key=' + import.meta.env.VITE_IMGBB_API_KEY, {
+      const response = await fetch('https://api.imgbb.com/1/upload', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
+
+      if (!response.ok) {
+        throw new Error('Resim yüklenemedi');
+      }
 
       const data = await response.json();
       return data.data.url;
     } catch (error) {
       console.error('Error uploading image:', error);
+      setError(error.message);
       return null;
-    } finally {
-      setIsUploading(false);
     }
   };
 
@@ -148,7 +152,7 @@ const Products = () => {
                 type="text"
                 value={newProduct.name}
                 onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -156,7 +160,7 @@ const Products = () => {
               <select
                 value={newProduct.categoryId}
                 onChange={(e) => setNewProduct({ ...newProduct, categoryId: e.target.value })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               >
                 <option value="">Kategori Seçin</option>
                 {categories.map((category) => (
@@ -172,7 +176,7 @@ const Products = () => {
                 type="number"
                 value={newProduct.order}
                 onChange={(e) => setNewProduct({ ...newProduct, order: parseInt(e.target.value) })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -181,7 +185,7 @@ const Products = () => {
                 type="text"
                 value={newProduct.link}
                 onChange={(e) => setNewProduct({ ...newProduct, link: e.target.value })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -190,7 +194,7 @@ const Products = () => {
                 type="number"
                 value={newProduct.oldPrice}
                 onChange={(e) => setNewProduct({ ...newProduct, oldPrice: parseFloat(e.target.value) })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -199,7 +203,7 @@ const Products = () => {
                 type="number"
                 value={newProduct.campaignPrice}
                 onChange={(e) => setNewProduct({ ...newProduct, campaignPrice: parseFloat(e.target.value) })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -207,7 +211,7 @@ const Products = () => {
               <input
                 type="file"
                 onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
-                className="mt-1 block w-full"
+                className="mt-1 block p-2 outline-none w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 accept="image/*"
               />
             </div>

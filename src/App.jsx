@@ -8,6 +8,7 @@ import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
 import Content from './pages/admin/Content';
 import Login from './pages/admin/Login';
+import Header from './pages/admin/Header';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
             <Route path='categories' element={<Categories />} />
             <Route path='products' element={<Products />} />
             <Route path='content' element={<Content />} />
+            <Route path='header' element={<Header />} />
           </Route>
         </Routes>
       </Router>

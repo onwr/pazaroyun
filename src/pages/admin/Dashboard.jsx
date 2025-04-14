@@ -4,8 +4,10 @@ import { db } from '../../config/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
 const Dashboard = () => {
-  const { isCampaignActive, startTime, endTime } = useCampaign();
+  const { isCampaignActive, endTime } = useCampaign();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [newEndTime, setNewEndTime] = useState(endTime ? new Date(endTime).toISOString().slice(0, 16) : '');
+  const [campaignDuration, setCampaignDuration] = useState('6'); // Varsayılan 6 saat
 
   const toggleCampaign = async () => {
     try {
@@ -15,6 +17,22 @@ const Dashboard = () => {
       });
     } catch (error) {
       console.error('Error updating campaign status:', error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const updateCampaignTimes = async () => {
+    try {
+      setIsUpdating(true);
+      const endDate = newEndTime ? new Date(newEndTime) : null;
+
+      await updateDoc(doc(db, 'settings', 'campaign'), {
+        endTime: endDate,
+        campaignDuration: parseInt(campaignDuration)
+      });
+    } catch (error) {
+      console.error('Error updating campaign times:', error);
     } finally {
       setIsUpdating(false);
     }
@@ -44,16 +62,45 @@ const Dashboard = () => {
         </div>
 
         <div className='bg-gray-50 p-4 rounded-lg'>
-          <h3 className='text-lg font-semibold mb-2'>Kampanya Zamanı</h3>
-          <div className='space-y-2'>
+          <h3 className='text-lg font-semibold mb-4'>Kampanya Zamanı</h3>
+          <div className='space-y-4'>
             <div>
-              <span className='text-gray-600'>Başlangıç:</span>{' '}
-              <span className='font-medium'>{startTime?.toLocaleString() || 'Belirlenmedi'}</span>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>
+                Kampanya Bitiş Zamanı
+              </label>
+              <input
+                type='datetime-local'
+                value={newEndTime}
+                onChange={(e) => setNewEndTime(e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500'
+              />
             </div>
             <div>
-              <span className='text-gray-600'>Bitiş:</span>{' '}
-              <span className='font-medium'>{endTime?.toLocaleString() || 'Belirlenmedi'}</span>
+              <label className='block text-sm font-medium text-gray-700 mb-1'>
+                Kampanya Süresi (Saat)
+              </label>
+              <select
+                value={campaignDuration}
+                onChange={(e) => setCampaignDuration(e.target.value)}
+                className='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500'
+              >
+                <option value="1">1 Saat</option>
+                <option value="2">2 Saat</option>
+                <option value="3">3 Saat</option>
+                <option value="4">4 Saat</option>
+                <option value="5">5 Saat</option>
+                <option value="6">6 Saat</option>
+                <option value="12">12 Saat</option>
+                <option value="24">24 Saat</option>
+              </select>
             </div>
+            <button
+              onClick={updateCampaignTimes}
+              disabled={isUpdating}
+              className='w-full px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500'
+            >
+              {isUpdating ? 'Güncelleniyor...' : 'Zamanları Güncelle'}
+            </button>
           </div>
         </div>
       </div>
