@@ -33,11 +33,11 @@ const Footer = () => {
 
         <div className='text-center text-sm text-gray-500 lg:text-base'>Anasayfaya git</div>
       </a>
-      <div className='prose prose-stone prose-li:leading-none text-[#3c8352 ] max-w-none text-xs lg:text-sm'>
+      <div className='prose prose-stone prose-li:leading-none text-[#3c8352] max-w-none text-xs lg:text-sm'>
         <p className='text-sm font-semibold lg:text-base'>Gaming Gecesi Kampanya Koşulları;</p>
-        <ul className='space-y-2 lg:space-y-3'>
+        <ul className='space-y-2 lg:space-y-3 mt-2 list-disc pl-5'>
           {campaignConditions.map((condition, index) => (
-            <li key={index}>{condition}</li>
+            <li key={index} className='before:mr-2'>{condition}</li>
           ))}
         </ul>
       </div>
