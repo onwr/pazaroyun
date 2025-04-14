@@ -39,21 +39,21 @@ const Categories = () => {
 
   return (
     <div className='my-10 px-4'>
-      <p className='text-center text-xl lg:text-3xl font-light'>Şunlara bakmaya ne dersin?</p>
+      <p className='caveat text-center text-4xl'>Şunlara bakmaya ne dersin?</p>
 
-      <div className='container mx-auto mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5'>
+      <div className='container mx-auto mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5'>
         {categories.map((category) => (
           <a
             key={category.id}
             href={category.link}
-            className='bg-[#030508] p-4 lg:p-8 rounded-2xl flex flex-col items-center justify-center gap-2 lg:gap-4 border border-white/10 hover:border-white/20 transition-colors'
+            className='flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#030508] p-4 transition-colors hover:border-white/20 lg:gap-4 lg:p-8'
           >
             <img
               src={category.image}
               alt={category.name}
-              className='w-auto h-auto lg:w-auto lg:h-auto object-contain'
+              className='h-auto w-auto object-contain lg:h-auto lg:w-auto'
             />
-            <p className='text-base text-center lg:text-lg text-[#9ca3af] hover:text-white transition-colors'>
+            <p className='text-center text-base text-[#9ca3af] transition-colors hover:text-white lg:text-lg'>
               {category.name}
             </p>
           </a>

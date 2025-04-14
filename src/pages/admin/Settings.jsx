@@ -63,87 +63,195 @@ const Settings = () => {
   };
 
   return (
-    <div className='bg-white shadow rounded-lg p-6'>
-      <h2 className='text-2xl font-bold mb-6'>Kampanya Ayarları</h2>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-800">Ayarlar</h1>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        {/* Time Settings */}
-        <div className='space-y-4'>
-          <h3 className='text-lg font-semibold'>Zaman Ayarları</h3>
+      {/* Campaign Settings */}
+      <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+        <h2 className="text-lg font-semibold text-gray-800">Kampanya Ayarları</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Başlangıç Saati</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kampanya Bitiş Tarihi
+            </label>
             <input
-              type='time'
-              name='startTime'
-              value={settings.startTime}
+              type="datetime-local"
+              value={settings.endTime}
               onChange={handleTimeChange}
-              className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Bitiş Saati</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kampanya Süresi (Saat)
+            </label>
             <input
-              type='time'
-              name='endTime'
-              value={settings.endTime}
-              onChange={handleTimeChange}
-              className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              type="number"
+              value={settings.campaignDuration}
+              onChange={(e) => setSettings({ ...settings, campaignDuration: parseInt(e.target.value) })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
         </div>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="isActive"
+            checked={settings.isActive}
+            onChange={(e) => setSettings({ ...settings, isActive: e.target.checked })}
+            className="h-4 w-4 text-green-500 focus:ring-green-500 border-gray-300 rounded"
+          />
+          <label
+            htmlFor="isActive"
+            className="ml-2 block text-sm text-gray-700"
+          >
+            Kampanya Aktif
+          </label>
+        </div>
+      </div>
 
-        {/* Theme Settings */}
-        <div className='space-y-4'>
-          <h3 className='text-lg font-semibold'>Tema Ayarları</h3>
+      {/* Theme Settings */}
+      <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+        <h2 className="text-lg font-semibold text-gray-800">Tema Ayarları</h2>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Arka Plan Rengi</label>
+          <input
+            type="color"
+            name="backgroundColor"
+            value={settings.theme.backgroundColor}
+            onChange={handleThemeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Yazı Rengi</label>
+          <input
+            type="color"
+            name="textColor"
+            value={settings.theme.textColor}
+            onChange={handleThemeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Ana Renk</label>
+          <input
+            type="color"
+            name="primaryColor"
+            value={settings.theme.primaryColor}
+            onChange={handleThemeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">İkincil Renk</label>
+          <input
+            type="color"
+            name="secondaryColor"
+            value={settings.theme.secondaryColor}
+            onChange={handleThemeChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+
+      {/* Social Media Settings */}
+      <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+        <h2 className="text-lg font-semibold text-gray-800">Sosyal Medya Ayarları</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Arka Plan Rengi</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Instagram
+            </label>
             <input
-              type='color'
-              name='backgroundColor'
-              value={settings.theme.backgroundColor}
-              onChange={handleThemeChange}
-              className='mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              type="text"
+              value={settings.socialMedia.instagram}
+              onChange={(e) => setSettings({ ...settings, socialMedia: { ...settings.socialMedia, instagram: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Yazı Rengi</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Facebook
+            </label>
             <input
-              type='color'
-              name='textColor'
-              value={settings.theme.textColor}
-              onChange={handleThemeChange}
-              className='mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              type="text"
+              value={settings.socialMedia.facebook}
+              onChange={(e) => setSettings({ ...settings, socialMedia: { ...settings.socialMedia, facebook: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className='block text-sm font-medium text-gray-700'>Ana Renk</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Twitter
+            </label>
             <input
-              type='color'
-              name='primaryColor'
-              value={settings.theme.primaryColor}
-              onChange={handleThemeChange}
-              className='mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              type="text"
+              value={settings.socialMedia.twitter}
+              onChange={(e) => setSettings({ ...settings, socialMedia: { ...settings.socialMedia, twitter: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className='block text-sm font-medium text-gray-700'>İkincil Renk</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              YouTube
+            </label>
             <input
-              type='color'
-              name='secondaryColor'
-              value={settings.theme.secondaryColor}
-              onChange={handleThemeChange}
-              className='mt-1 block w-full h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500'
+              type="text"
+              value={settings.socialMedia.youtube}
+              onChange={(e) => setSettings({ ...settings, socialMedia: { ...settings.socialMedia, youtube: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
         </div>
       </div>
 
-      <div className='mt-6'>
+      {/* Contact Settings */}
+      <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
+        <h2 className="text-lg font-semibold text-gray-800">İletişim Ayarları</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              E-posta
+            </label>
+            <input
+              type="email"
+              value={settings.contact.email}
+              onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, email: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Telefon
+            </label>
+            <input
+              type="tel"
+              value={settings.contact.phone}
+              onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, phone: e.target.value } })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Adres
+            </label>
+            <textarea
+              value={settings.contact.address}
+              onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, address: e.target.value } })}
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-auto">
         <button
           onClick={saveSettings}
-          className='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700'
+          className="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors shadow-lg"
         >
-          Ayarları Kaydet
+          Değişiklikleri Kaydet
         </button>
       </div>
     </div>

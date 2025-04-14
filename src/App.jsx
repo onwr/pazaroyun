@@ -16,14 +16,14 @@ const App = () => {
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/admin/login' element={<Login />} />
+          <Route path='/pazaroyunadmin/login' element={<Login />} />
           <Route
-            path='/admin'
+            path='/pazaroyunadmin'
             element={
               localStorage.getItem('isAdmin') === 'true' ? (
                 <AdminLayout />
               ) : (
-                <Navigate to='/admin/login' replace />
+                <Navigate to='/pazaroyunadmin/login' replace />
               )
             }
           >

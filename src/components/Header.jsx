@@ -42,10 +42,10 @@ const Header = () => {
         style={{ backgroundImage: `url(${headerContent.backgroundImage})` }}
       >
         <div className="absolute inset-0">
-          <div className="container max-w-screen-xl flex justify-end">
+          <div className="container flex justify-end">
             <a href="/" className="flex items-center justify-center space-x-2 py-5">
               <img 
-                className="h-6 lg:h-10 hover:opacity-90 transition-opacity" 
+                className="h-12 lg:h-16 hover:opacity-90 transition-opacity" 
                 src={headerContent.logo} 
                 alt="incehesap logo" 
               />

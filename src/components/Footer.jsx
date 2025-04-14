@@ -22,19 +22,19 @@ const Footer = () => {
   }, []);
 
   return (
-    <div className='container pb-10 mx-auto px-4'>
+    <div className='container mx-auto px-4 pb-10'>
       <a href='https://pazaroyun.com' className='py-5'>
         <a
           href='https://pazaroyun.com'
           className='flex items-center justify-center transition-opacity hover:opacity-90'
         >
-          <img src='/logo.webp' alt='' className='w-32 lg:w-[144.22px] h-auto' />
+          <img src='/logo.webp' alt='' className='h-auto w-32 lg:w-[144.22px]' />
         </a>
 
-        <div className='text-center text-gray-500 text-sm lg:text-base'>Anasayfaya git</div>
+        <div className='text-center text-sm text-gray-500 lg:text-base'>Anasayfaya git</div>
       </a>
-      <div className='prose prose-stone prose-li:leading-none max-w-none text-xs lg:text-sm text-[#2c403c]'>
-        <p className='font-semibold text-sm lg:text-base'>Gaming Gecesi Kampanya Koşulları;</p>
+      <div className='prose prose-stone prose-li:leading-none text-[#3c8352 ] max-w-none text-xs lg:text-sm'>
+        <p className='text-sm font-semibold lg:text-base'>Gaming Gecesi Kampanya Koşulları;</p>
         <ul className='space-y-2 lg:space-y-3'>
           {campaignConditions.map((condition, index) => (
             <li key={index}>{condition}</li>

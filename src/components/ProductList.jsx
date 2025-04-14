@@ -49,12 +49,12 @@ const ProductList = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2 justify-center">
+    <div className='container mx-auto px-4 py-8'>
+      <div className='mb-8'>
+        <div className='grid grid-cols-2 justify-center gap-2 md:flex md:flex-wrap'>
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               selectedCategory === 'all'
                 ? 'bg-green-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -62,11 +62,11 @@ const ProductList = () => {
           >
             Tümü
           </button>
-          {activeCategories.map(category => (
+          {activeCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 selectedCategory === category.id
                   ? 'bg-green-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -78,60 +78,56 @@ const ProductList = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map(product => (
+      <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+        {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            className='overflow-hidden rounded-xl bg-white/10 shadow-lg transition-shadow duration-300 hover:shadow-xl'
           >
-            <div className="relative aspect-square">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
+            <div className='relative aspect-square'>
+              <img src={product.image} alt={product.name} className='h-full w-full object-cover' />
               {product.oldPrice && product.campaignPrice && (
-                <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                <div className='absolute top-4 right-4 rounded-full bg-red-500 px-3 py-1 text-sm font-bold text-white'>
                   -%{Math.round((1 - product.campaignPrice / product.oldPrice) * 100)}
                 </div>
               )}
-              <div className="absolute right-5 bottom-5 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg">
+              <div className='absolute right-5 bottom-5 rounded-lg bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm'>
                 {product.oldPrice && product.campaignPrice ? (
-                  <div className="flex flex-col items-end">
-                    <span className="text-gray-400 line-through text-sm">
+                  <div className='flex flex-col items-end'>
+                    <span className='text-[#eb1219] text-sm line-through'>
                       {product.oldPrice} TL
                     </span>
-                    <span className="text-green-500 font-bold text-lg">
+                    <span className='text-lg font-bold text-green-500'>
                       {product.campaignPrice} TL
                     </span>
                   </div>
                 ) : (
-                  <span className="text-gray-800 font-bold text-lg">
+                  <span className='text-lg font-bold text-gray-800'>
                     {product.oldPrice || product.campaignPrice} TL
                   </span>
                 )}
               </div>
             </div>
-            <div className="p-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+            <div className='flex items-center justify-between p-4'>
+              <h3 className='mb-2 line-clamp-2 text-lg font-semibold text-gray-50'>
                 {product.name}
               </h3>
-                <a
-                  href={product.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
-                >
-                  İncele
-                </a>
+              <a
+                href={product.link}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='rounded-lg bg-green-500 px-4 py-2 text-white transition-colors hover:bg-green-600'
+              >
+                İncele
+              </a>
             </div>
           </div>
         ))}
       </div>
 
       {filteredProducts.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500">Bu kategoride ürün bulunamadı.</p>
+        <div className='py-12 text-center'>
+          <p className='text-gray-500'>Bu kategoride ürün bulunamadı.</p>
         </div>
       )}
     </div>

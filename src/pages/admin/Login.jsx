@@ -9,9 +9,9 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin11') {
+    if (username === 'pazaroyun' && password === 'Pazaroyun123*') {
       localStorage.setItem('isAdmin', 'true');
-      navigate('/admin');
+      navigate('/pazaroyunadmin');
     } else {
       setError('Kullanıcı adı veya şifre hatalı');
     }

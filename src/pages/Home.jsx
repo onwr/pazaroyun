@@ -138,23 +138,23 @@ const Home = () => {
       <Header />
       <main className='container mx-auto px-4 py-8'>
         <div className='space-y-4 text-center lg:space-y-4'>
-          <p className='text-sm lg:mb-2 lg:text-2xl'>
+          <p className='teko text-sm lg:mb-2 lg:text-6xl'>
             {textContent.subtitle || "Oyuncular her Cuma incehesap.com'da buluşuyor"}
           </p>
-          <h1 className='font-display bg-gradient-to-r from-green-500 via-lime-500 to-green-500 bg-clip-text text-3xl text-transparent lg:text-9xl'>
+          <h1 className='anton bg-gradient-to-r from-green-500 via-lime-500 to-green-500 bg-clip-text text-3xl text-transparent lg:text-9xl'>
             {textContent.title || 'GAMING GECESi'}
           </h1>
-          <h2 className='font-display text-xl lg:text-5xl'>
+          <h2 className='rowdies text-xl lg:text-5xl'>
             {textContent.subheading || 'Kampanya Başlıyor!'}
           </h2>
-          <h3 className='text-lg lg:text-2xl'>
+          <h3 className='shadows-into-light text-lg lg:text-4xl'>
             {textContent.description || "#GamingGecesi'nin Bomba Ürünlerini Kaçırmadan Al"}
           </h3>
         </div>
 
         {!isActive && campaignInfo.endTime && <Countdown targetDate={campaignInfo.endTime} />}
 
-        <div className='relative mt-5 mx-auto aspect-video w-full max-w-[1250px]'>
+        <div className='relative mx-auto mt-5 aspect-video w-full max-w-[1250px]'>
           {homeContent.isVideoActive && homeContent.videoEmbed && (
             <iframe
               src={homeContent.videoEmbed}
@@ -168,7 +168,7 @@ const Home = () => {
           {homeContent.isBannerActive && homeContent.bannerImage && (
             <img
               src={homeContent.bannerImage}
-              alt="Banner"
+              alt='Banner'
               className='h-full w-full rounded-2xl border-2 border-white/40 object-cover'
             />
           )}

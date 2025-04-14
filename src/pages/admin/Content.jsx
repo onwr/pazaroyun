@@ -150,8 +150,8 @@ const Content = () => {
         )}
 
         {/* Video & Banner Section */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-2xl font-bold mb-4">Video ve Banner Yönetimi</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Video ve Banner Yönetimi</h2>
           <div className="space-y-6">
             {/* Video Section */}
             <div className="border rounded-lg p-4">
@@ -167,7 +167,7 @@ const Content = () => {
                     className="mt-1 block w-full p-2 border rounded"
                   />
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
                   <button
                     onClick={handleVideoEmbedUpdate}
                     className={`px-4 py-2 rounded-md text-white ${
@@ -178,7 +178,7 @@ const Content = () => {
                   >
                     {homeContent.isVideoActive ? 'Video Aktif' : 'Videoyu Aktif Et'}
                   </button>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 mt-2 sm:mt-0">
                     {homeContent.isVideoActive ? 'Video şu anda aktif' : 'Video şu anda pasif'}
                   </span>
                 </div>
@@ -199,7 +199,7 @@ const Content = () => {
                     className="mt-1 block w-full p-2 border rounded"
                   />
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
                   <button
                     onClick={handleBannerUpdate}
                     className={`px-4 py-2 rounded-md text-white ${
@@ -210,7 +210,7 @@ const Content = () => {
                   >
                     {homeContent.isBannerActive ? 'Banner Aktif' : 'Bannerı Aktif Et'}
                   </button>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500 mt-2 sm:mt-0">
                     {homeContent.isBannerActive ? 'Banner şu anda aktif' : 'Banner şu anda pasif'}
                   </span>
                 </div>
@@ -220,8 +220,8 @@ const Content = () => {
         </div>
 
         {/* Text Content Section */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-2xl font-bold mb-4">Metin İçerikleri</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Metin İçerikleri</h2>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">Alt Başlık</label>
@@ -261,7 +261,7 @@ const Content = () => {
             </div>
             <button
               onClick={handleTextContentUpdate}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Metin İçeriklerini Güncelle
             </button>
@@ -269,10 +269,10 @@ const Content = () => {
         </div>
 
         {/* Campaign Conditions Section */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-2xl font-bold mb-4">Kampanya Koşulları</h2>
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Kampanya Koşulları</h2>
           <div className="space-y-4">
-            <div className="flex space-x-2">
+            <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
               <input
                 type="text"
                 value={newCondition}
@@ -289,7 +289,7 @@ const Content = () => {
             </div>
             <ul className="space-y-2">
               {footerContent.conditions.map((condition, index) => (
-                <li key={index} className="flex items-center space-x-2">
+                <li key={index} className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
                   <span className="flex-1">{condition}</span>
                   <button
                     onClick={() => handleRemoveCondition(index)}
@@ -302,7 +302,7 @@ const Content = () => {
             </ul>
             <button
               onClick={handleFooterContentUpdate}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Koşulları Güncelle
             </button>

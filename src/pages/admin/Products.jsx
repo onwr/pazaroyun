@@ -183,8 +183,8 @@ const Products = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-6">Ürün Yönetimi</h2>
+      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-6">Ürün Yönetimi</h2>
 
         {/* Add New Product Form */}
         <div className="mb-8 p-4 border rounded-lg">
@@ -263,7 +263,7 @@ const Products = () => {
           <button
             onClick={addProduct}
             disabled={isUploading}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            className="mt-4 w-full sm:w-auto px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
             {isUploading ? 'Yükleniyor...' : 'Ürün Ekle'}
           </button>
@@ -349,24 +349,24 @@ const Products = () => {
                       )}
                     </div>
                   </div>
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2">
                     <button
                       onClick={cancelEditing}
-                      className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                      className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
                     >
                       İptal
                     </button>
                     <button
                       onClick={saveEdit}
-                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                      className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                     >
                       Kaydet
                     </button>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                     <img src={product.image} alt={product.name} className="w-16 h-16 object-cover rounded" />
                     <div>
                       <h4 className="font-medium">{product.name}</h4>
@@ -378,16 +378,16 @@ const Products = () => {
                       <p className="text-sm text-gray-500">Kampanya Fiyatı: {product.campaignPrice} TL</p>
                     </div>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
                     <button
                       onClick={() => startEditing(product)}
-                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      className="w-full sm:w-auto px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
                     >
                       Düzenle
                     </button>
                     <button
                       onClick={() => updateProduct(product.id, { isActive: !product.isActive })}
-                      className={`px-3 py-1 rounded ${
+                      className={`w-full sm:w-auto px-3 py-1 rounded ${
                         product.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}
                     >
@@ -395,7 +395,7 @@ const Products = () => {
                     </button>
                     <button
                       onClick={() => deleteProduct(product.id)}
-                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                      className="w-full sm:w-auto px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
                     >
                       Sil
                     </button>
