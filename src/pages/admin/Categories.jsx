@@ -14,6 +14,7 @@ const Categories = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingCategory, setEditingCategory] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -116,6 +117,49 @@ const Categories = () => {
     }
   };
 
+  const startEditing = (category) => {
+    setEditingCategory({ ...category });
+  };
+
+  const cancelEditing = () => {
+    setEditingCategory(null);
+  };
+
+  const saveEdit = async () => {
+    try {
+      if (!editingCategory.name) return;
+
+      const updatedCategories = categories.map(category =>
+        category.id === editingCategory.id ? editingCategory : category
+      );
+
+      await updateDoc(doc(db, 'settings', 'categories'), {
+        list: updatedCategories
+      });
+
+      setCategories(updatedCategories);
+      setEditingCategory(null);
+      setError('Kategori başarıyla güncellendi.');
+    } catch (error) {
+      console.error('Error updating category:', error);
+      setError('Kategori güncellenirken bir hata oluştu.');
+    }
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const imageUrl = await handleImageUpload(file);
+      if (imageUrl) {
+        setEditingCategory({ ...editingCategory, image: imageUrl });
+      }
+    } catch (error) {
+      setError('Resim yüklenirken bir hata oluştu.');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -182,31 +226,99 @@ const Categories = () => {
         {/* Categories List */}
         <div className="space-y-4">
           {categories.map((category) => (
-            <div key={category.id} className="p-4 border rounded-lg flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <img src={category.image} alt={category.name} className="w-16 h-16 object-cover rounded" />
-                <div>
-                  <h4 className="font-medium">{category.name}</h4>
-                  <p className="text-sm text-gray-500">Sıra: {category.order}</p>
-                  <p className="text-sm text-gray-500">{category.link}</p>
+            <div key={category.id} className="p-4 border rounded-lg">
+              {editingCategory?.id === category.id ? (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Kategori Adı</label>
+                      <input
+                        type="text"
+                        value={editingCategory.name}
+                        onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Sıra</label>
+                      <input
+                        type="number"
+                        value={editingCategory.order}
+                        onChange={(e) => setEditingCategory({ ...editingCategory, order: parseInt(e.target.value) })}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Link</label>
+                      <input
+                        type="text"
+                        value={editingCategory.link}
+                        onChange={(e) => setEditingCategory({ ...editingCategory, link: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Görsel</label>
+                      <input
+                        type="file"
+                        onChange={handleImageChange}
+                        className="mt-1 block w-full"
+                        accept="image/*"
+                      />
+                      {editingCategory.image && (
+                        <img src={editingCategory.image} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded" />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={cancelEditing}
+                      className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                    >
+                      İptal
+                    </button>
+                    <button
+                      onClick={saveEdit}
+                      className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+                    >
+                      Kaydet
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => updateCategory(category.id, { isActive: !category.isActive })}
-                  className={`px-3 py-1 rounded ${
-                    category.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}
-                >
-                  {category.isActive ? 'Aktif' : 'Pasif'}
-                </button>
-                <button
-                  onClick={() => deleteCategory(category.id)}
-                  className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                >
-                  Sil
-                </button>
-              </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <img src={category.image} alt={category.name} className="w-16 h-16 object-cover rounded" />
+                    <div>
+                      <h4 className="font-medium">{category.name}</h4>
+                      <p className="text-sm text-gray-500">Sıra: {category.order}</p>
+                      <p className="text-sm text-gray-500">{category.link}</p>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => startEditing(category)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                      Düzenle
+                    </button>
+                    <button
+                      onClick={() => updateCategory(category.id, { isActive: !category.isActive })}
+                      className={`px-3 py-1 rounded ${
+                        category.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}
+                    >
+                      {category.isActive ? 'Aktif' : 'Pasif'}
+                    </button>
+                    <button
+                      onClick={() => deleteCategory(category.id)}
+                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                    >
+                      Sil
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

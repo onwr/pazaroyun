@@ -23,7 +23,7 @@ const Footer = () => {
 
   return (
     <div className='container pb-10 mx-auto px-4'>
-      <div className='py-5'>
+      <a href='https://pazaroyun.com' className='py-5'>
         <a
           href='https://pazaroyun.com'
           className='flex items-center justify-center transition-opacity hover:opacity-90'
@@ -32,7 +32,7 @@ const Footer = () => {
         </a>
 
         <div className='text-center text-gray-500 text-sm lg:text-base'>Anasayfaya git</div>
-      </div>
+      </a>
       <div className='prose prose-stone prose-li:leading-none max-w-none text-xs lg:text-sm text-[#2c403c]'>
         <p className='font-semibold text-sm lg:text-base'>Gaming Gecesi Kampanya Koşulları;</p>
         <ul className='space-y-2 lg:space-y-3'>

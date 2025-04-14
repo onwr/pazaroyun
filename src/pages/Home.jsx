@@ -17,6 +17,12 @@ const Home = () => {
     subheading: '',
     description: '',
   });
+  const [homeContent, setHomeContent] = useState({
+    videoEmbed: '',
+    bannerImage: '',
+    isVideoActive: false,
+    isBannerActive: true
+  });
   const [campaignInfo, setCampaignInfo] = useState({
     endTime: null,
     campaignDuration: 6,
@@ -34,19 +40,17 @@ const Home = () => {
         ]);
 
         if (homeDoc.exists()) {
-          setVideoEmbed(homeDoc.data().videoEmbed || '');
+          setHomeContent(homeDoc.data());
         }
         if (textDoc.exists()) {
           setTextContent(textDoc.data());
         }
         if (campaignDoc.exists()) {
           const data = campaignDoc.data();
-
           let endTimeDate = null;
           if (data.endTime && data.endTime.seconds) {
             endTimeDate = new Date(data.endTime.seconds * 1000);
           }
-
           setCampaignInfo({
             endTime: endTimeDate,
             campaignDuration: data.campaignDuration || 6,
@@ -151,14 +155,21 @@ const Home = () => {
         {!isActive && campaignInfo.endTime && <Countdown targetDate={campaignInfo.endTime} />}
 
         <div className='relative mt-5 mx-auto aspect-video w-full max-w-[1250px]'>
-          {videoEmbed && (
+          {homeContent.isVideoActive && homeContent.videoEmbed && (
             <iframe
-              src={videoEmbed}
+              src={homeContent.videoEmbed}
               title='pazaroyun.com Bilgisayardan Kullanım Videosu'
               className='h-full w-full rounded-2xl border-2 border-white/40'
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
               referrerPolicy='strict-origin-when-cross-origin'
               allowFullScreen
+            />
+          )}
+          {homeContent.isBannerActive && homeContent.bannerImage && (
+            <img
+              src={homeContent.bannerImage}
+              alt="Banner"
+              className='h-full w-full rounded-2xl border-2 border-white/40 object-cover'
             />
           )}
         </div>

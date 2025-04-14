@@ -51,9 +51,9 @@ const Categories = () => {
             <img
               src={category.image}
               alt={category.name}
-              className='w-16 h-16 lg:w-auto lg:h-auto object-contain'
+              className='w-auto h-auto lg:w-auto lg:h-auto object-contain'
             />
-            <p className='text-base lg:text-lg text-[#9ca3af] hover:text-white transition-colors'>
+            <p className='text-base text-center lg:text-lg text-[#9ca3af] hover:text-white transition-colors'>
               {category.name}
             </p>
           </a>
