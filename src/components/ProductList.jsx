@@ -36,6 +36,10 @@ const ProductList = () => {
     ? products.filter(product => product.isActive)
     : products.filter(product => product.categoryId === selectedCategory && product.isActive);
 
+  const activeCategories = categories.filter(category => 
+    products.some(product => product.categoryId === category.id && product.isActive)
+  );
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -47,7 +51,7 @@ const ProductList = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <div className="flex flex-wrap gap-2 justify-center">
+        <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2 justify-center">
           <button
             onClick={() => setSelectedCategory('all')}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
@@ -58,7 +62,7 @@ const ProductList = () => {
           >
             Tümü
           </button>
-          {categories.map(category => (
+          {activeCategories.map(category => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
@@ -88,31 +92,30 @@ const ProductList = () => {
               />
               {product.oldPrice && product.campaignPrice && (
                 <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                  %{Math.round((1 - product.campaignPrice / product.oldPrice) * 100)}
+                  -%{Math.round((1 - product.campaignPrice / product.oldPrice) * 100)}
                 </div>
               )}
+              <div className="absolute right-5 bottom-5 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg">
+                {product.oldPrice && product.campaignPrice ? (
+                  <div className="flex flex-col items-end">
+                    <span className="text-gray-400 line-through text-sm">
+                      {product.oldPrice} TL
+                    </span>
+                    <span className="text-green-500 font-bold text-lg">
+                      {product.campaignPrice} TL
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-gray-800 font-bold text-lg">
+                    {product.oldPrice || product.campaignPrice} TL
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="p-4">
+            <div className="p-4 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
                 {product.name}
               </h3>
-              <div className="flex items-center justify-between">
-                <div>
-                  {product.oldPrice && product.campaignPrice ? (
-                    <>
-                      <span className="text-gray-400 line-through mr-2">
-                        {product.oldPrice} TL
-                      </span>
-                      <span className="text-green-500 font-bold">
-                        {product.campaignPrice} TL
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-gray-800 font-bold">
-                      {product.oldPrice || product.campaignPrice} TL
-                    </span>
-                  )}
-                </div>
                 <a
                   href={product.link}
                   target="_blank"
@@ -121,7 +124,6 @@ const ProductList = () => {
                 >
                   İncele
                 </a>
-              </div>
             </div>
           </div>
         ))}
