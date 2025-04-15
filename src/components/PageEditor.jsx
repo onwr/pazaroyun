@@ -1,9 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
 import { db } from '../config/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export const PageEditor = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [pageData, setPageData] = useState({
     title: '',
     slug: '',
@@ -13,13 +16,38 @@ export const PageEditor = () => {
   
   const editorRef = useRef(null);
   
+  useEffect(() => {
+    const fetchPage = async () => {
+      if (id) {
+        try {
+          const docRef = doc(db, 'pages', id);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            setPageData(docSnap.data());
+          } else {
+            console.error('Sayfa bulunamadı');
+            navigate('/pazaroyunadmin/pages');
+          }
+        } catch (error) {
+          console.error('Sayfa yüklenirken hata:', error);
+          navigate('/pazaroyunadmin/pages');
+        }
+      }
+    };
+
+    fetchPage();
+  }, [id, navigate]);
+  
   const handleSave = async () => {
     try {
-      await setDoc(doc(db, 'pages', pageData.slug), {
+      const docRef = doc(db, 'pages', id || pageData.slug);
+      await setDoc(docRef, {
         ...pageData,
         updatedAt: new Date().toISOString(),
       });
       alert('Sayfa başarıyla kaydedildi!');
+      navigate('/pazaroyunadmin/pages');
     } catch (error) {
       console.error('Sayfa kaydedilirken hata:', error);
       alert('Sayfa kaydedilirken bir hata oluştu!');
@@ -53,6 +81,7 @@ export const PageEditor = () => {
               onChange={(e) => setPageData({ ...pageData, slug: e.target.value })}
               className="block w-full p-2 outline-none flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
               placeholder="sayfa-url"
+              disabled={!!id}
             />
           </div>
         </div>
@@ -97,7 +126,7 @@ export const PageEditor = () => {
             onClick={handleSave}
             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            Kaydet
+            {id ? 'Güncelle' : 'Kaydet'}
           </button>
         </div>
       </div>
