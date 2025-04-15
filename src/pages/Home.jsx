@@ -154,7 +154,12 @@ const Home = () => {
         </div>
 
         {isActive ? (
-          <Countdown targetDate={campaignInfo.endTime} />
+          <>
+            <Countdown targetDate={campaignInfo.endTime} />
+            <div className="mt-8">
+              <CategorySlider />
+            </div>
+          </>
         ) : (
           <div className="mt-8">
             <CategorySlider />

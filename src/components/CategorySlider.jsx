@@ -103,9 +103,13 @@ const CategorySlider = () => {
                 <p className='text-base text-[#9ca3af] transition-colors hover:text-white lg:text-lg'>
                   {category.name}
                 </p>
-                {category.day !== currentDay && (
+                {category.day === currentDay ? (
                   <p className='text-sm text-green-500 mt-1'>
-                    {days[category.day]} için
+                    Aktif
+                  </p>
+                ) : (
+                  <p className='text-sm text-red-500 mt-1'>
+                    {days[category.day]}
                   </p>
                 )}
               </div>
