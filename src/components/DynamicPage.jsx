@@ -62,11 +62,13 @@ export const DynamicPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div 
-        className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: pageData.content }}
-      />
+    <div className='bg-[#0a0a0a]'>
+      <div className='container mx-auto flex items-center justify-center  px-4 py-8'>
+        <div
+          className='prose prose-lg max-w-none'
+          dangerouslySetInnerHTML={{ __html: pageData.content }}
+        />
+      </div>
     </div>
   );
 };
