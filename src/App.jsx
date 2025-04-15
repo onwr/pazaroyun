@@ -9,6 +9,9 @@ import Products from './pages/admin/Products';
 import Content from './pages/admin/Content';
 import Login from './pages/admin/Login';
 import Header from './pages/admin/Header';
+import { PageEditor } from './components/PageEditor';
+import { PageList } from './components/PageList';
+import { DynamicPage } from './components/DynamicPage';
 
 const App = () => {
   return (
@@ -32,7 +35,11 @@ const App = () => {
             <Route path='products' element={<Products />} />
             <Route path='content' element={<Content />} />
             <Route path='header' element={<Header />} />
+            <Route path="pages" element={<PageList />} />
+            <Route path="pages/new" element={<PageEditor />} />
+            <Route path="pages/edit/:id" element={<PageEditor />} />
           </Route>
+          <Route path="/:slug" element={<DynamicPage />} />
         </Routes>
       </Router>
     </CampaignProvider>
