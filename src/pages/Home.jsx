@@ -5,6 +5,7 @@ import Categories from '../components/Categories';
 import ProductList from '../components/ProductList';
 import Countdown from '../components/Countdown';
 import Footer from '../components/Footer';
+import CategorySlider from '../components/CategorySlider';
 import { db } from '../config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -152,7 +153,13 @@ const Home = () => {
           </h3>
         </div>
 
-        {!isActive && campaignInfo.endTime && <Countdown targetDate={campaignInfo.endTime} />}
+        {isActive ? (
+          <Countdown targetDate={campaignInfo.endTime} />
+        ) : (
+          <div className="mt-8">
+            <CategorySlider />
+          </div>
+        )}
 
         <div className='relative mx-auto mt-5 aspect-video w-full max-w-[1250px]'>
           {homeContent.isVideoActive && homeContent.videoEmbed && (
